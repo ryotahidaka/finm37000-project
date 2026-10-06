@@ -7,27 +7,29 @@
 | Member | GitHub | Part 1 role |
 | --- | --- | --- |
 | Ryota Hidaka | ryotahidaka | Tech leader (owns this repo) |
-| TODO | TODO | Communication leader (README) |
-| TODO | TODO | Design leader (Issues) |
-| TODO | TODO | Design leader (Issues) |
+| Abinaya Ankur Raut | kira7688 | Communication leader (README) |
+| Konark Gupta | konark20 | Design leader (Issues) |
+| Raymond Wang | raymondw112 | Design leader (Issues) |
 
 Team communication channel: **WhatsApp**
 
 ## Project Summary
 
-**TODO: one or two sentences.** State the question or application, the CME market(s), and the expected output.
+#### Q) State the question or application, the CME market(s), and the expected output.
 
-Example format: *"We study X in CME <product> futures using Databento <schema> data, and produce Y (a report, plots, a backtest, or a dashboard)."*
+A) We study pairs trading on CME precious metals futures using Databento futures data and analyze the trading feasibility with proper backtesting.**
 
 ### Motivation
 
-**TODO:** Why is this interesting? What market-structure feature or trading idea does it explore?
+#### Q) Why is this interesting? What market-structure feature or trading idea does it explore?
+
+A) At the times of inflation and market turmoil, investor prefer safe assets in the form of precious metals. Gold and Silver have seen a huge return in the recent past. However, when positioning in the precious metals, one has to understand the volatility of the asset and balance between these assets. We plan to analyse and come up with a strategy that tries to lever or de-lever out of these positions based on market movements.
 
 ### Scope
 
-- **Market(s):** TODO. Keep this to a single market or a small set. Different CME markets have different calendars, sessions, and matching behavior, so expand only after the core goal is met.
-- **Date range:** TODO. Full book depth (MBO/MBP-10) in our license only goes back about one to two months, so choose dates accordingly.
-- **Databento dataset and schema:** `GLBX.MDP3` (CME Globex). Schema(s): TODO (e.g. `trades`, `mbp-1`, `mbp-10`, `mbo`, `ohlcv-1m`, `definition`).
+- **Market(s):** Commodites Previous Metals Market
+- **Date range:** Past 2 years
+- **Databento dataset and schema:** `GLBX.MDP3` (CME Globex). Schema(s): prices and trades
 - **Out of scope:** TODO. Note that a Brent/WTI mean-reverting strategy is not permitted for this course.
 
 ### Desired Outcome
@@ -39,9 +41,14 @@ By the end of the project, a user can run a single documented workflow that:
 3. runs the analysis, simulation, or strategy, and
 4. writes results (tables, figures, a summary) to an output folder.
 
-**TODO:** Describe the final deliverable and the headline results we expect to show.
+#### Q) Describe the final deliverable and the headline results we expect to show.
 
-## Data
+A) Precious metal investment strategy with levering/de-levering out of positions to get maximum returns and low drawdown.
+
+
+## Course Logistics
+
+### Data
 
 Data comes from [Databento](https://databento.com/) under the course's CME license.
 
@@ -52,7 +59,7 @@ Data comes from [Databento](https://databento.com/) under the course's CME licen
 - Raw downloads are cached under `data/` (git-ignored) so the same request isn't billed or downloaded twice.
 - **Additional data sources:** TODO (none planned yet). If added, document how to obtain them and how to run without them.
 
-## Getting Started
+### Getting Started
 
 > Aspirational until the Tech leader's project structure is merged.
 
@@ -87,7 +94,7 @@ python -m <package>.run                                        # TODO
 pytest
 ```
 
-## Planned Repository Layout
+### Planned Repository Layout
 
 ```
 finm37000-project/
@@ -102,7 +109,7 @@ finm37000-project/
 
 This is a plan; the Tech leader may adjust it when initializing the repo.
 
-## Roadmap
+### Roadmap
 
 The work is tracked in the [GitHub Issues](../../issues). Each issue maps to a step in the workflow above.
 
@@ -113,7 +120,7 @@ The work is tracked in the [GitHub Issues](../../issues). Each issue maps to a s
 | Part 3 | Lecture 4 | TODO (e.g. core analysis or strategy) |
 | Completion | Lecture 5 | Polished, reproducible project |
 
-## Contributing / Workflow
+### Contributing / Workflow
 
 1. Fork the main repo (owned by the Tech leader) and clone your fork.
 2. Create a branch per issue (`git checkout -b issue-<n>-short-name`).
@@ -121,7 +128,7 @@ The work is tracked in the [GitHub Issues](../../issues). Each issue maps to a s
 4. At least one other team member reviews; the Tech leader merges.
 5. Discuss scope changes in the relevant Issue, not offline.
 
-## References
+### References
 
 - [Databento documentation](https://databento.com/docs)
 - TODO: papers or prior work relevant to the chosen topic
