@@ -9,4 +9,5 @@ pytest
 python-dotenv
 databento
 pykalman   # time-varying (Kalman) hedge ratio
+statsmodels
 # Optional (stretch, copula model): copulas
