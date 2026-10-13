@@ -1,5 +1,13 @@
-databento>=0.40
-matplotlib>=3.7
-numpy>=1.24
-pandas>=2.0
-statsmodels>=0.14
+# Python 3.12. Core pipeline dependencies (all free / open source).
+pandas
+numpy
+scipy
+statsmodels
+matplotlib
+jupyterlab
+pytest
+python-dotenv
+databento
+pykalman   # time-varying (Kalman) hedge ratio
+statsmodels
+# Optional (stretch, copula model): copulas

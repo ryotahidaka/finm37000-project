@@ -219,3 +219,5 @@ __marimo__/
 # Databento downloads and generated backtest outputs
 data/
 results/
+!data/.gitkeep
+output/
