@@ -17,7 +17,7 @@ Team communication channel: **WhatsApp**
 
 #### Q) State the question or application, the CME market(s), and the expected output.
 
-A) We study pairs trading on CME precious metals futures using Databento futures data and analyze the trading feasibility with proper backtesting.**
+A) We study pairs trading on CME precious metals futures using Databento futures data and analyze the trading feasibility with a walk-forward backtest.
 
 ### Motivation
 
@@ -28,8 +28,8 @@ A) At the times of inflation and market turmoil, investor prefer safe assets in 
 ### Scope
 
 - **Market(s):** Commodites Previous Metals Market
-- **Date range:** Past 2 years
-- **Databento dataset and schema:** `GLBX.MDP3` (CME Globex). Schema(s): prices and trades
+- **Date range:** Past 20 years (or the longest history available for the selected continuous contracts; `GLBX.MDP3` currently begins on 2010-06-06)
+- **Databento dataset and schema:** `GLBX.MDP3` (CME Globex), `ohlcv-1d`, continuous symbols such as `GC.c.0`, `SI.c.0`, `PL.c.0`, and `PA.c.0`
 - **Out of scope:** TODO. Note that a Brent/WTI mean-reverting strategy is not permitted for this course.
 
 ### Desired Outcome
@@ -79,13 +79,19 @@ export DATABENTO_API_KEY="your-key-here"
 ### Running the project
 
 ```bash
-# 1. Fetch and cache data
-python -m <package>.data --start YYYY-MM-DD --end YYYY-MM-DD   # TODO
+# Download the last 20 years and run the walk-forward pairs backtest.
+python scripts/precious_metals_pairs.py
 
-# 2. Run the analysis / strategy
-python -m <package>.run                                        # TODO
+# Optional controls:
+python scripts/precious_metals_pairs.py --start 2006-01-01 --end 2026-01-01 \
+  --symbols GC.c.0 SI.c.0 PL.c.0 PA.c.0 \
+  --transaction-cost-bps 2
 
-# 3. Results are written to results/
+# Re-run the backtest from a previously saved wide price CSV without an API call.
+python scripts/precious_metals_pairs.py --prices-csv results/precious_metals_pairs/prices.csv
+
+# Results are written to results/precious_metals_pairs/:
+# prices.csv, daily_backtest.csv, summary.csv, config.json, equity_curve.png
 ```
 
 ### Running the tests
@@ -99,7 +105,8 @@ pytest
 ```
 finm37000-project/
 ├── README.md
-├── requirements.txt        # or pyproject.toml
+├── requirements.txt
+├── scripts/precious_metals_pairs.py
 ├── src/<package>/          # reusable code (data loading, features, analysis)
 ├── notebooks/              # exploration and presentation only
 ├── tests/
