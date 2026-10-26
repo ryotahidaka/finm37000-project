@@ -1,35 +1,37 @@
-# Project Design: Gold/Silver Futures Pairs Trading
+# Project design
 
-> Design and component overview for the FINM 37000 project. Companion to the README: the README states *what* we deliver and how to run it; this document shows *how the pieces fit together* and *why*. Maintained as part of the Design-leader work; the task breakdown lives in the repo Issues.
+How the pieces fit together and why. The README says what the project delivers and how to run it; this document covers the pipeline, the components, the design decisions and where the work goes next.
 
 ## 1. Goal in one line
 
-Build a reproducible pipeline that pulls CME Gold (GC) and Silver (SI) futures from Databento, constructs a statistically valid spread, generates mean-reversion signals, and backtests the strategy with realistic futures costs, then reports honestly whether an edge survives.
+A reproducible research framework that pulls CME futures from Databento, builds roll-aware continuous series, and tests relative-value strategies with realistic contract sizing and costs, then reports honestly whether an edge survives. Gold vs silver is the first case study; the research lab extends it to five metals.
 
 ## 2. Scope
 
-After the professor's review on 18 Oct we narrowed the project to one focus: a **daily** pairs-trading strategy on GC/SI, with long-run continuous adjustment and an honest, cost-aware backtest. Trade-level execution analysis (legging the spread, routing across standard and micro books, replaying intraday quotes) was a second project in itself, so it moved to [Future work](#8-future-work).
+After the professor's review on 18 Oct the project has one focus: daily strategies with long-run continuous adjustment and an honest, cost-aware backtest. Trade-level execution (legging, routing, replaying intraday quotes) is Part B material and sits in [future work](#8-future-work).
 
-- Signals are generated once a day, on daily closes of the ratio-adjusted continuous series.
-- Trades are sized in real contracts (GC/SI, with MGC/SIL for the remainder) and marked on actual prices, with every roll charged explicitly.
-- Data: `GLBX.MDP3` from 2010-06-06 (dataset start) to today, `definition` + `ohlcv-1d` per contract via parent symbology (#19).
+- Signals once a day, on the ratio-adjusted continuous series.
+- Positions in real contracts (GC/SI with MGC/SIL for the remainder), marked on actual prices, every roll charged.
+- Data: `GLBX.MDP3` from 2010-06-06, `definition`, `ohlcv-1d` and `statistics` per contract via parent symbology.
 
 ## 3. Pipeline (data to result)
 
 ```mermaid
 flowchart TD
-    A[Databento GLBX.MDP3<br/>GC.FUT and SI.FUT per-expiry] --> B[Ingestion and local cache<br/>definition + ohlcv-1d]
-    B --> C[Continuous-contract build<br/>roll 5 business days pre-FND]
+    A[Databento GLBX.MDP3<br/>per-contract GC, SI, PL, PA, HG] --> B[Ingestion and cache<br/>definition, ohlcv-1d, statistics]
+    B --> C[Continuous build<br/>roll 5 business days before FND]
     C --> D1[Ratio-adjusted series<br/>for SIGNALS]
-    C --> D2[Actual-price series + logged roll costs<br/>for PnL]
-    D1 --> E[Exploratory analysis<br/>ratio, regimes, ADF I 1 tests]
-    E --> F[Cointegration + hedge ratio<br/>Engle-Granger, Johansen, Kalman beta]
-    F --> G[Spread + OU model<br/>kappa, theta, half-life]
-    G --> H[Signal generation<br/>z-score entry/exit, position sizing]
-    H --> I[Backtest engine<br/>walk-forward, costs, rolls]
+    C --> D2[Actual prices + roll log<br/>for PnL]
+    D1 --> E[Cointegration, hedge ratio, OU<br/>full sample and year by year]
+    E --> H[Signals<br/>z-score bands, beta-neutral sizing]
+    H --> I[Backtest<br/>fill lag 1, walk-forward, costs, ledger]
     D2 --> I
-    I --> J[Evaluation + report<br/>Sharpe, drawdown, stress 2011/2013/2020/2022]
-    J --> K[Results in output/<br/>tables + figures]
+    I --> J[Evaluation and report<br/>Sharpe, drawdown, attribution, stress windows]
+    D1 --> L[Research lab<br/>pairs, PCA, Johansen, trend, carry, curves]
+    D2 --> L
+    L --> M[Deflated Sharpe over every trial]
+    J --> K[output/ and docs/results/]
+    M --> K
 ```
 
 ## 4. Components
@@ -56,18 +58,25 @@ flowchart LR
 
 We reuse the professor's `finm37000` package for the data and roll plumbing rather than rebuilding it; our package holds the pairs-trading logic on top.
 
+The `research/` folder sits beside `src/gcsi`: it imports the contract specs, rolls, cost model and ledger, adds platinum, palladium and copper specs, and runs the wider strategy search. It is exploration code with light tests; `src/gcsi` is the tested core.
+
 ## 5. Key design decisions
 
 | Decision | Choice | Why |
 |---|---|---|
-| Pair | Gold (GC) vs Silver (SI) | Economically linked precious metals; course-permitted (energy mean-reversion is not) |
-| Selection method | Cointegration backbone, distance as benchmark | A single known pair needs no ML search; cointegration gives a tradable spread |
-| Hedge ratio | Rolling / Kalman, not static OLS | The GC/SI relationship drifts and breaks in some regimes; a static beta is unsafe |
-| Signal | OU half-life + z-score bands | Standard, interpretable; half-life estimated on our data, not borrowed from papers |
-| Continuous series | Two series: ratio-adjusted (signals) + real-price (PnL) | Databento continuous prices are unadjusted; mixing adjustment methods corrupts either the signal or the PnL |
-| Costs | Half-spread per crossing + fees + roll cost (#24) | A spread crosses the spread on both legs each entry and exit; ignoring this inflates returns |
-| Libraries | statsmodels, scipy, pykalman (all free) | No dependency on paid tooling (ArbitrageLab is paid; excluded) |
-| Advanced model | None in scope; copula moved to future work | Keeps the two weeks on one well-tested strategy (professor's review, 18 Oct) |
+| Case study | Gold (GC) vs silver (SI) | Economically linked, liquid, with micros for fine sizing; course-permitted |
+| Continuous series | Two series: ratio-adjusted for signals, actual prices for PnL | Mixing them corrupts either the signal (roll gaps look like moves) or the PnL |
+| Roll | 5 business days before first notice | Avoids delivery and the thin last days; logged and charged as two trades |
+| Hedge ratio | Trailing 1-year OLS, Kalman as a sensitivity | The relationship drifts; a static full-sample beta would look ahead |
+| Signal | z-score with the lookback re-priced at today's beta | A consistent z-score; otherwise beta changes create fake signals |
+| Fills | One day after the signal at the close | No same-close fills on a signal computed from that close |
+| Costs | Half a tick + exchange fee + commission per contract per side | A spread crosses both legs on entry, exit and every roll |
+| Attribution | Ledger splits ideal spread, sizing rounding, trade and roll costs | Shows whether losses come from the idea or from frictions |
+| Parameter choice | Walk-forward on the previous 3 years | Out-of-sample by construction |
+| Prices in the lab | Official settlements (`statistics`, stat 3) | Both legs priced at the same moment; last trades print at different times |
+| Multiple testing | Count every configuration, report the deflated Sharpe | With 191 tries the best Sharpe is not evidence on its own |
+| Leverage in the lab | Leg notional capped at $2m; spread-book cost mode for curve trades | Quiet spreads would otherwise be levered without limit; a listed spread is one fill |
+| Libraries | statsmodels, scipy, pykalman | Free, standard, no paid tooling |
 
 ## 6. How the Issues map to components
 
@@ -87,18 +96,18 @@ We reuse the professor's `finm37000` package for the data and roll plumbing rath
 | #23 CI | `.github/workflows` | tests on every PR |
 | #11 Evaluation | `metrics.py` + `report.py` -> `output/` | metrics, stress windows, report.md + figures |
 
-## 7. Central risk (state it up front)
+| (lab) Research lab | `research/` | 182 more configurations on five metals, trial tables, deflated Sharpe |
 
-The gold/silver long-run relationship is **not stable**. The empirical literature finds cointegration in some periods and breakdown in others (notably the 1990s, and blow-outs in 2011 and March 2020). We therefore treat "the pair is cointegrated" as a hypothesis to test across sub-periods, use strictly out-of-sample calibration, and report whether the edge survives transaction costs rather than assuming it does. A clear negative result, honestly shown, is a valid and strong outcome for this project.
+## 7. Central risk, and how it played out
+
+We stated up front that the gold/silver relationship might not be stable and that a clear negative result, honestly shown, would be a valid outcome. That is what happened: the pair is not cointegrated over 2010-2026 (Engle-Granger p 0.87), the ratio trends for years, and the walk-forward Sharpe is -0.85 after costs, with costs only about $31k against a $236k gross loss. The synthetic check (Sharpe 1.15 when mean reversion is built in) shows the code is not the reason. The research lab then showed that strategies that do not assume mean reversion between two metals (PCA residuals, momentum, carry) are the ones with a positive sign, though none clears the multiple-testing bar.
 
 ## 8. Future work
 
-Out of scope for this course after the 18 Oct review; kept here so the ideas aren't lost.
-
-| Idea | Why it's interesting | Why it's out of scope now | Was |
+| Idea | Why it's interesting | What it needs | Was |
 |---|---|---|---|
-| Execution layer | Leg the spread on the harder-to-fill side and hit the hedge on the other; route each leg between standard and micro books (GC/MGC, SI/SIL) | A separate trade-level project; needs intraday data and its own validation | #26 |
-| Execution simulator | Replay intraday top-of-book to measure what the execution layer saves versus crossing both legs | Needs MBP-1 / BBO history and a fill model; only useful with the execution layer | #27 |
-| Copula signal | A genuinely bivariate signal to compare with cointegration / OU | Gains are usually marginal after costs; adds a second strategy to validate | #12 |
-| Cross-exchange routing | Same legging idea across COMEX and another venue (MCX, SGE, LME precious) | Data outside the course licence, FX conversion, trading-hours overlap | (idea) |
-
+| Cross-commodity spread taxonomy | Test whether mean reversion strength ranks with how hard the link between legs is: venue arbitrage (CL vs ICE WTI, BZ vs ICE Brent, NG vs HH), processing margins (cracks, soybean crush, white sugar premium, ethanol), substitutes (WTI vs Brent, NG vs TTF, NY vs London cocoa, arabica vs robusta, wheat spreads), calendars | ICE Futures US, ICE Futures Europe and ICE Endex data next to CME, FX legs, unit conversions, cross-exchange calendars. Energy mean reversion is outside this course's permitted strategies, so this is a research extension | (new) |
+| Execution layer | Leg the spread on the harder-to-fill side, route between standard and micro books | Intraday data, its own validation | #26 |
+| Execution simulator | Replay top-of-book to measure what the execution layer saves | MBP-1 or BBO history and a fill model | #27 |
+| Copula signal | A second bivariate model to compare with cointegration and OU | Gains usually marginal after costs | #12 |
+| Regime-aware PCA residual | The lab's best lead earns most of its Sharpe after 2022; test whether a regime filter or volatility scaling makes it stable | More history or more names (the ICE metals and other CME commodities) | (new) |
