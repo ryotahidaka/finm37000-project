@@ -76,6 +76,9 @@ python -m gcsi.report --source databento --start 2010-06-06 --cache-only
 python research\run_all.py --cache data\databento --out output\lab
 python research\build_report.py --out output\lab
 
+:: 4. the cross-commodity study (tests, tables, figures, docs\STUDY.md inputs) -> docs\study\
+python research\universe\study.py --cache data\databento --runs output\study --docs docs\study
+
 :: no key? the same pipeline on synthetic data (true beta 0.8, half-life 13.9 days)
 python -m gcsi.report --source synthetic
 ```
@@ -139,6 +142,16 @@ Settlement prices for GC, SI, PL, PA and HG, scored 2014-2026 on $1m. Summary: [
 - The GC calendar is steady but tiny in dollars, and it is the best of 144 grid points, so it fails the correction.
 - Picking pairs by cointegration each year does no better than GC/SI. Strategies that do not assume mean reversion (residual, momentum, carry) are the ones with a positive sign.
 
+### Cross-commodity study: 10 products on CME and ICE
+
+The full study is in [docs/STUDY.md](docs/STUDY.md), with every table and figure in `docs/study/`. It reuses the pipeline on gold, silver, platinum, palladium, copper, WTI crude, ICE Brent, natural gas, soybeans and NY cocoa, with four strategy families, two cost models (per leg, or the spread worked as one order), single-product and no-link controls, and a regime study.
+
+- None of the 45 pairs is cointegrated over 2014-2026, and none stays cointegrated in more than 32% of rolling two-year windows, despite high correlations (crude/Brent 0.89, gold/silver 0.78).
+- Calendars revert fast (median half-life about 23 days) but by too little to pay the spread on daily data; working the spread as one order adds 0.1 to 0.35 of Sharpe and only the silver calendar is clearly positive (0.83).
+- The best "pairs" were outright palladium and platinum mean reversion in disguise (Sharpe 1.02 and 0.76 traded alone), and WTI vs ICE Brent (0.62 since 2021) drops to 0.13 on settlement prices and is outside the course scope.
+- Gold/silver loses about 16% of capital in the 2020 recession; palladium mean reversion and the silver calendar do better in stress than in calm.
+- After the deflated-Sharpe correction over 1,750 configurations nothing clears 50%.
+
 ## What we learned
 
 - A spread is only as mean-reverting as the economic force that ties it together. Gold and silver share drivers but nothing forces their ratio back, so it trends for years.
@@ -162,7 +175,7 @@ pytest -m db      # run only the Databento tests
 
 GitHub Actions ([.github/workflows/tests.yml](.github/workflows/tests.yml)) runs `pytest -q` on Python 3.12, on Linux and Windows, for every pull request to `main` and every push to `main`. It uses no secrets, so `db` tests are always skipped there.
 
-`tests/test_research.py` covers the lab's statistical helpers on synthetic series.
+`tests/test_research.py` covers the lab's statistical helpers on synthetic series, and `tests/test_universe.py` covers the cross-commodity code (symbol parsing for CME and ICE, open-interest rolls without roll gaps, the two cost models, the no-look-ahead volatility regime, deflated Sharpe).
 
 ## Repository layout
 
@@ -173,9 +186,12 @@ finm37000-project/
 ├── docs/DESIGN.md              pipeline, components, design decisions
 ├── docs/results/               GC/SI report, tables, figures
 ├── docs/results/lab/           lab trial tables and summary
+├── docs/STUDY.md, docs/study/  cross-commodity study report, tables and figures
 ├── src/gcsi/                   contracts, data, rolls, cointegration, ou, signals,
 │                               costs, ledger, backtest, metrics, report, synthetic
 ├── research/                   multi-metal strategy lab (see research/README.md)
+├── research/universe/          cross-commodity study: CME + ICE loading, rolls, structures,
+│                               pairs lab, regimes, guarded Databento pull script
 ├── notebooks/                  exploration and presentation only
 ├── tests/
 ├── data/                       Databento cache (git-ignored)

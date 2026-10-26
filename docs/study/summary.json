@@ -1,0 +1,560 @@
+{
+ "products": [
+  "GC",
+  "SI",
+  "PL",
+  "PA",
+  "HG",
+  "CL",
+  "NG",
+  "ZS",
+  "6B",
+  "CC",
+  "BRN"
+ ],
+ "tradable": [
+  "GC",
+  "SI",
+  "PL",
+  "PA",
+  "HG",
+  "CL",
+  "NG",
+  "ZS",
+  "CC",
+  "BRN"
+ ],
+ "n_trials_structures": 209,
+ "n_configs_pairs": 1750,
+ "n_wf_series_pairs": 576,
+ "sr0_structures": 0.6243002730603229,
+ "pairs_eg_p_below_5pct": 0,
+ "pairs_total": 45,
+ "max_stable_share": 0.3181818181818182,
+ "corr_CL_BRN": 0.8879763717271273,
+ "corr_GC_SI": 0.7797902637149623,
+ "median_half_life": {
+  "calendar": 23.490827864138605,
+  "substitute": 526.0297429558431
+ },
+ "follow": {
+  "Gold vs silver (walk-forward)": {
+   "sharpe": -0.032536453798900127,
+   "ann_ret": -0.0025040197894735266,
+   "ann_vol": 0.07696043966408453,
+   "mdd": -0.22251104983921288,
+   "start": "2014-01-02"
+  },
+  "Metals PCA residual, 30d": {
+   "sharpe": 0.342979441908083,
+   "ann_ret": 0.019304893894736812,
+   "ann_vol": 0.05628586304572285,
+   "mdd": -0.1322976090239677,
+   "start": "2014-01-02"
+  },
+  "WTI vs ICE Brent (walk-forward)": {
+   "sharpe": 0.6196170054874861,
+   "ann_ret": 0.04570256302186909,
+   "ann_vol": 0.07375937493179746,
+   "mdd": -0.09319917518314891,
+   "start": "2021-01-04"
+  },
+  "Palladium mean reversion (Kalman)": {
+   "sharpe": 1.0040250573603622,
+   "ann_ret": 0.05221122153241648,
+   "ann_vol": 0.05200191085836313,
+   "mdd": -0.049148342449351734,
+   "start": "2017-01-05"
+  },
+  "Platinum mean reversion (Kalman)": {
+   "sharpe": 0.8161681101991615,
+   "ann_ret": 0.04668910449282076,
+   "ann_vol": 0.05720525454177287,
+   "mdd": -0.10808089106557994,
+   "start": "2018-07-03"
+  },
+  "Silver calendar, worked as one order": {
+   "sharpe": 0.8205496580652137,
+   "ann_ret": 0.006123298324022318,
+   "ann_vol": 0.007462434800668292,
+   "mdd": -0.01003594162974375,
+   "start": "2017-03-01"
+  },
+  "Brent vs cocoa (control)": {
+   "sharpe": -0.11166214306764953,
+   "ann_ret": -0.009095407180851028,
+   "ann_vol": 0.08145470730702936,
+   "mdd": -0.19912967941774284,
+   "start": "2021-01-11"
+  }
+ },
+ "wti_brent": {
+  "family": "structure walk-forward",
+  "class": "substitute",
+  "name": "WTI (NYMEX) vs Brent (ICE) | walk-forward",
+  "sharpe": 0.6196170054874861,
+  "ann_ret": 0.045702563021869,
+  "ann_vol": 0.0737593749317974,
+  "mdd": -0.0931991751831489,
+  "gross_sharpe": 0.6752897938131657,
+  "cost_usd": 24778.69999999999,
+  "gross_usd": 298450.00000000175,
+  "start": "2021-01-04",
+  "structure": "WTI (NYMEX) vs Brent (ICE)",
+  "L": NaN,
+  "entry": NaN,
+  "psr": 0.9425239635395524,
+  "dsr_all": 0.4952469780279568,
+  "dsr_family": 0.6777107622563119
+ },
+ "families": [
+  {
+   "kind": "calendar",
+   "family": "meta",
+   "cost_mode": "leg",
+   "spreads": 10,
+   "median": -0.32686485702670354,
+   "share_positive": 0.4
+  },
+  {
+   "kind": "calendar",
+   "family": "meta",
+   "cost_mode": "spread",
+   "spreads": 10,
+   "median": -0.10690091445331965,
+   "share_positive": 0.4
+  },
+  {
+   "kind": "calendar",
+   "family": "mom",
+   "cost_mode": "leg",
+   "spreads": 10,
+   "median": -0.46484505376234414,
+   "share_positive": 0.0
+  },
+  {
+   "kind": "calendar",
+   "family": "mom",
+   "cost_mode": "spread",
+   "spreads": 10,
+   "median": -0.39553937405795436,
+   "share_positive": 0.0
+  },
+  {
+   "kind": "calendar",
+   "family": "mr",
+   "cost_mode": "leg",
+   "spreads": 10,
+   "median": -0.02534446078426885,
+   "share_positive": 0.4
+  },
+  {
+   "kind": "calendar",
+   "family": "mr",
+   "cost_mode": "spread",
+   "spreads": 10,
+   "median": -0.0045906301011131995,
+   "share_positive": 0.5
+  },
+  {
+   "kind": "calendar",
+   "family": "regime",
+   "cost_mode": "leg",
+   "spreads": 10,
+   "median": -0.13338876407735356,
+   "share_positive": 0.0
+  },
+  {
+   "kind": "calendar",
+   "family": "regime",
+   "cost_mode": "spread",
+   "spreads": 10,
+   "median": -0.0741764179307208,
+   "share_positive": 0.2
+  },
+  {
+   "kind": "outright",
+   "family": "kalman",
+   "cost_mode": "leg",
+   "spreads": 10,
+   "median": 0.23642677290837832,
+   "share_positive": 0.8
+  },
+  {
+   "kind": "outright",
+   "family": "kalman",
+   "cost_mode": "spread",
+   "spreads": 10,
+   "median": 0.23642677290837832,
+   "share_positive": 0.8
+  },
+  {
+   "kind": "outright",
+   "family": "meta",
+   "cost_mode": "leg",
+   "spreads": 10,
+   "median": 0.23642677290837832,
+   "share_positive": 0.8
+  },
+  {
+   "kind": "outright",
+   "family": "meta",
+   "cost_mode": "spread",
+   "spreads": 10,
+   "median": 0.23642677290837832,
+   "share_positive": 0.8
+  },
+  {
+   "kind": "pair",
+   "family": "kalman",
+   "cost_mode": "leg",
+   "spreads": 43,
+   "median": 0.2364716938057783,
+   "share_positive": 0.6444444444444445
+  },
+  {
+   "kind": "pair",
+   "family": "kalman",
+   "cost_mode": "spread",
+   "spreads": 43,
+   "median": 0.2378554094208514,
+   "share_positive": 0.6444444444444445
+  },
+  {
+   "kind": "pair",
+   "family": "meta",
+   "cost_mode": "leg",
+   "spreads": 45,
+   "median": 0.040647670848136,
+   "share_positive": 0.5333333333333333
+  },
+  {
+   "kind": "pair",
+   "family": "meta",
+   "cost_mode": "spread",
+   "spreads": 45,
+   "median": 0.0492536414664007,
+   "share_positive": 0.5555555555555556
+  },
+  {
+   "kind": "pair",
+   "family": "mom",
+   "cost_mode": "leg",
+   "spreads": 45,
+   "median": -0.0276078772707537,
+   "share_positive": 0.37777777777777777
+  },
+  {
+   "kind": "pair",
+   "family": "mom",
+   "cost_mode": "spread",
+   "spreads": 45,
+   "median": -0.0260714814757994,
+   "share_positive": 0.4
+  },
+  {
+   "kind": "pair",
+   "family": "mr",
+   "cost_mode": "leg",
+   "spreads": 45,
+   "median": -0.0041549473196875,
+   "share_positive": 0.4888888888888889
+  },
+  {
+   "kind": "pair",
+   "family": "mr",
+   "cost_mode": "spread",
+   "spreads": 45,
+   "median": 0.0090026706394043,
+   "share_positive": 0.5111111111111111
+  },
+  {
+   "kind": "pair",
+   "family": "regime",
+   "cost_mode": "leg",
+   "spreads": 45,
+   "median": -0.099657706939875,
+   "share_positive": 0.4444444444444444
+  },
+  {
+   "kind": "pair",
+   "family": "regime",
+   "cost_mode": "spread",
+   "spreads": 45,
+   "median": -0.098474931739233,
+   "share_positive": 0.4444444444444444
+  }
+ ],
+ "calendars_cost": [
+  {
+   "calendar": "BRN calendar",
+   "per_leg": 0.0030152452924936,
+   "one_order": 0.0666453851945824,
+   "change": 0.0636301399020888
+  },
+  {
+   "calendar": "CC calendar",
+   "per_leg": -0.6418969540904741,
+   "one_order": -0.577526843280799,
+   "change": 0.06437011080967514
+  },
+  {
+   "calendar": "CL calendar",
+   "per_leg": -0.2774699645070723,
+   "one_order": -0.3141914237455686,
+   "change": -0.03672145923849629
+  },
+  {
+   "calendar": "GC calendar",
+   "per_leg": -0.410180609744058,
+   "one_order": -0.1659477503471991,
+   "change": 0.2442328593968589
+  },
+  {
+   "calendar": "HG calendar",
+   "per_leg": -0.3847246074174998,
+   "one_order": -0.0478540785594402,
+   "change": 0.3368705288580596
+  },
+  {
+   "calendar": "NG calendar",
+   "per_leg": -0.3762597495463348,
+   "one_order": -0.3440025410058897,
+   "change": 0.032257208540445115
+  },
+  {
+   "calendar": "PA calendar",
+   "per_leg": 0.0447715926228075,
+   "one_order": 0.0537231921883989,
+   "change": 0.008951599565591398
+  },
+  {
+   "calendar": "PL calendar",
+   "per_leg": 0.0446368826599902,
+   "one_order": 0.1255209249373424,
+   "change": 0.08088404227735221
+  },
+  {
+   "calendar": "SI calendar",
+   "per_leg": 0.6398888233279416,
+   "one_order": 0.8271930460483935,
+   "change": 0.18730422272045189
+  },
+  {
+   "calendar": "ZS calendar",
+   "per_leg": -0.7727450571136582,
+   "one_order": -0.6989443031234555,
+   "change": 0.0738007539902027
+  }
+ ],
+ "regimes": [
+  {
+   "strategy": "Gold vs silver (walk-forward)",
+   "regime": "NBER recession",
+   "days": 63,
+   "ann_ret": -0.6408947999999993,
+   "sharpe": -4.181909345935168,
+   "period_ret": -0.16022369999999983
+  },
+  {
+   "strategy": "Gold vs silver (walk-forward)",
+   "regime": "calm",
+   "days": 2147,
+   "ann_ret": 0.008391641080577758,
+   "sharpe": 0.10949869133011117,
+   "period_ret": 0.07149545000000178
+  },
+  {
+   "strategy": "Gold vs silver (walk-forward)",
+   "regime": "high volatility",
+   "days": 1018,
+   "ann_ret": 0.010588431041257415,
+   "sharpe": 0.15112842777837152,
+   "period_ret": 0.04277390000000019
+  },
+  {
+   "strategy": "Gold vs silver (walk-forward)",
+   "regime": "stress: 2022 energy and metals shock",
+   "days": 97,
+   "ann_ret": 0.033552890721649554,
+   "sharpe": 0.45099514652704753,
+   "period_ret": 0.01291520000000003
+  },
+  {
+   "strategy": "Metals PCA residual, 30d",
+   "regime": "NBER recession",
+   "days": 63,
+   "ann_ret": -0.2506328,
+   "sharpe": -2.851362812376041,
+   "period_ret": -0.0626582
+  },
+  {
+   "strategy": "Metals PCA residual, 30d",
+   "regime": "calm",
+   "days": 2147,
+   "ann_ret": 0.05342194010246854,
+   "sharpe": 1.0784545166795605,
+   "period_ret": 0.4551464499999998
+  },
+  {
+   "strategy": "Metals PCA residual, 30d",
+   "regime": "high volatility",
+   "days": 1018,
+   "ann_ret": -0.04136841159135568,
+   "sharpe": -0.6188584898723453,
+   "period_ret": -0.16711525000000033
+  },
+  {
+   "strategy": "Metals PCA residual, 30d",
+   "regime": "stress: 2022 energy and metals shock",
+   "days": 97,
+   "ann_ret": 0.07623480618556701,
+   "sharpe": 1.681732262421453,
+   "period_ret": 0.029344349999999998
+  },
+  {
+   "strategy": "WTI vs ICE Brent (walk-forward)",
+   "regime": "calm",
+   "days": 803,
+   "ann_ret": 0.033406130510585615,
+   "sharpe": 0.5194515331881973,
+   "period_ret": 0.106448900000001
+  },
+  {
+   "strategy": "WTI vs ICE Brent (walk-forward)",
+   "regime": "high volatility",
+   "days": 609,
+   "ann_ret": 0.06093897931034514,
+   "sharpe": 0.6924623504778492,
+   "period_ret": 0.14726920000000077
+  },
+  {
+   "strategy": "WTI vs ICE Brent (walk-forward)",
+   "regime": "stress: 2022 energy and metals shock",
+   "days": 97,
+   "ann_ret": 0.05183717938144329,
+   "sharpe": 1.2055448845547403,
+   "period_ret": 0.019953199999999997
+  },
+  {
+   "strategy": "Palladium mean reversion (Kalman)",
+   "regime": "NBER recession",
+   "days": 63,
+   "ann_ret": 0.2817029999999994,
+   "sharpe": 1.7998288133002034,
+   "period_ret": 0.07042574999999986
+  },
+  {
+   "strategy": "Palladium mean reversion (Kalman)",
+   "regime": "calm",
+   "days": 1574,
+   "ann_ret": 0.027921848157560367,
+   "sharpe": 0.7854572296680415,
+   "period_ret": 0.17440075000000005
+  },
+  {
+   "strategy": "Palladium mean reversion (Kalman)",
+   "regime": "high volatility",
+   "days": 811,
+   "ann_ret": 0.06577318076448825,
+   "sharpe": 1.2076308514316871,
+   "period_ret": 0.2116747999999999
+  },
+  {
+   "strategy": "Palladium mean reversion (Kalman)",
+   "regime": "stress: 2022 energy and metals shock",
+   "days": 97,
+   "ann_ret": 0.1839096000000002,
+   "sharpe": 1.8527106394684203,
+   "period_ret": 0.07079060000000008
+  },
+  {
+   "strategy": "Platinum mean reversion (Kalman)",
+   "regime": "NBER recession",
+   "days": 63,
+   "ann_ret": 0.0032744000000001624,
+   "sharpe": 0.02615400785097763,
+   "period_ret": 0.0008186000000000406
+  },
+  {
+   "strategy": "Platinum mean reversion (Kalman)",
+   "regime": "calm",
+   "days": 1188,
+   "ann_ret": 0.04468490303030303,
+   "sharpe": 0.9757492037756489,
+   "period_ret": 0.2106574
+  },
+  {
+   "strategy": "Platinum mean reversion (Kalman)",
+   "regime": "high volatility",
+   "days": 811,
+   "ann_ret": 0.0407267889025894,
+   "sharpe": 0.6361166124435124,
+   "period_ret": 0.13106915
+  },
+  {
+   "strategy": "Platinum mean reversion (Kalman)",
+   "regime": "stress: 2022 energy and metals shock",
+   "days": 97,
+   "ann_ret": 0.14928246185567007,
+   "sharpe": 2.785129244116381,
+   "period_ret": 0.05746189999999998
+  },
+  {
+   "strategy": "Silver calendar, worked as one order",
+   "regime": "NBER recession",
+   "days": 63,
+   "ann_ret": 0.013991199999999721,
+   "sharpe": 0.48320576030168494,
+   "period_ret": 0.0034977999999999303
+  },
+  {
+   "strategy": "Silver calendar, worked as one order",
+   "regime": "calm",
+   "days": 1535,
+   "ann_ret": 0.0038384442996742406,
+   "sharpe": 0.9048782816352329,
+   "period_ret": 0.023380999999999836
+  },
+  {
+   "strategy": "Silver calendar, worked as one order",
+   "regime": "high volatility",
+   "days": 811,
+   "ann_ret": 0.007271458446362396,
+   "sharpe": 0.9187355848682779,
+   "period_ret": 0.023401399999999614
+  },
+  {
+   "strategy": "Silver calendar, worked as one order",
+   "regime": "stress: 2022 energy and metals shock",
+   "days": 97,
+   "ann_ret": 0.027570878350516338,
+   "sharpe": 2.8559281867784763,
+   "period_ret": 0.010612600000000336
+  },
+  {
+   "strategy": "Brent vs cocoa (control)",
+   "regime": "calm",
+   "days": 798,
+   "ann_ret": 0.0248163789473685,
+   "sharpe": 0.4041880177464969,
+   "period_ret": 0.07858520000000024
+  },
+  {
+   "strategy": "Brent vs cocoa (control)",
+   "regime": "high volatility",
+   "days": 609,
+   "ann_ret": -0.038060172413793114,
+   "sharpe": -0.4004019529286917,
+   "period_ret": -0.09197875000000003
+  },
+  {
+   "strategy": "Brent vs cocoa (control)",
+   "regime": "stress: 2022 energy and metals shock",
+   "days": 97,
+   "ann_ret": -0.10623008041237113,
+   "sharpe": -0.8599648099575985,
+   "period_ret": -0.04089014999999999
+  }
+ ]
+}
